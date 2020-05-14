@@ -1,0 +1,16 @@
+aside.menu-area {
+    background-color: var(--bg-dark);
+}
+
+.menu a {
+    display: block;
+    text-decoration: none;
+    color: #FFF;
+    font-weight: 300;
+    padding: 15px;
+
+}
+
+.menu a:hover {
+    background-image: radial-gradient( circle 853px at 3.3% 5.3%,  rgba(29,231,240,0.56) 0%, rgba(247,92,246,0.5) 100.2% );
+}
