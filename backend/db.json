@@ -14,6 +14,16 @@
       "name": "Rodrigo",
       "email": "rodrigocoder@gmail.com",
       "id": 3
+    },
+    {
+      "name": "Ola",
+      "email": "ola_oi@gmail.com",
+      "id": 4
+    },
+    {
+      "name": "new user : changed",
+      "email": "newuser@enterprise.com",
+      "id": 5
     }
   ]
 }

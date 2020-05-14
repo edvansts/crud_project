@@ -21,6 +21,19 @@ export default class UserCrud extends React.Component {
         this.state={...initialState}
         this.save = this.save.bind(this)
         this.clear = this.clear.bind(this)
+        this.listUpdate = this.listUpdate.bind(this)
+    }
+
+    componentDidMount(){
+        axios.get(baseUrl).then(resp =>{
+            this.setState({list: resp.data})
+        })
+    }
+    
+    listUpdate(){
+        axios.get(baseUrl).then(resp =>{
+            this.setState({list: resp.data})
+        })
     }
 
     clear(){
@@ -32,9 +45,27 @@ export default class UserCrud extends React.Component {
         const method = user.id ? 'put' : 'post'
         const url = user.id ? `${baseUrl}/${user.id}` : baseUrl;
         axios[method](url, user).then(resp => {
-            this.setState({ user: initialState.user})
+            this.setState({user: initialState.user}, () => {
+                return this.listUpdate();
+            }) 
        })
     }
+
+    remove(user){
+        console.log(user)
+        if(window.confirm("Você quer realmente excluir o usúario?")){
+            axios.delete(`${baseUrl}/${user.id}`).then(resp =>{
+                console.log(resp.data)
+                this.listUpdate()
+            })
+        }
+    }
+
+    load(user){
+        this.setState({user})
+    }
+
+
 
     updateField(event){
         const user = {...this.state.user}
@@ -78,12 +109,48 @@ export default class UserCrud extends React.Component {
             </div>
         )
     }
+    renderTable(){
+        return(
+            <table className="table mt-4">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
 
+                <tbody>
+                    {this.renderRows()}
+                </tbody>
+            </table>
+        )
+    }
+
+    renderRows(){
+        return this.state.list.map(user =>{
+            return (
+                <tr key={user.id}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>
+                        <button className="btn btn-warning" onClick={() => this.load(user) } >
+                            <i className="fa fa-pencil" />
+                        </button>
+                        <button className="btn btn-danger ml-2" onClick={() => this.remove(user) }>
+                            <i className="fa fa-trash"/>
+                        </button>
+                    </td>
+                </tr>
+            )
+        })
+    }
 
     render(){
         return(
             <Main {...headerProps}>
                 {this.renderForm()}
+                {this.renderTable()}
             </Main>
         )
     }
